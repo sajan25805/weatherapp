@@ -60,3 +60,16 @@ button {
     justify-content: center;
   }
 
+
+  .alert {
+    padding: 1em;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #ff4d4d;
+  }
+  
