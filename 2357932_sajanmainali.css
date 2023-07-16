@@ -1,31 +1,24 @@
-/* *{
 
-
-} */
 
 body {
     display: flex;
-    justify-content: center;
-    background: #222222;
+    flex-direction: column;
+    background: #181717;
     align-items: center;
     font-family: 'Open Sans', sans-serif;
     height: 100vh;
-    background-image: url('https://source.unsplash.com/1900x900/?landscape');
+    background-image: url('https://source.unsplash.com/1920x1080/?landscape');
     background-size: 100% 100%;
     background-repeat: no-repeat;
     background-attachment: fixed;
     font-size: 120%;
+    text-transform: capitalize;
 
 }
 
-.card {
-    padding: 2.5em;
-    background: #000000d0;
-    color: white !important;
-    border-radius: 30px;
-    width: 100%;
-    max-width: 400px;
-    margin: 1em;
+img.icon {
+  width: 60%; /* Adjust the width as desired */
+  height: 100px; /* Adjust the height as desired */
 }
 
 
@@ -36,31 +29,32 @@ button {
     height: 44px;
     width: 44px;
     outline: none;
-    background: #7c7c7c2b;
+    background: #000000e0;
     color: white;
     cursor: pointer;
     transition: 0.2s ease-in-out;
   }
 
+/* Input search field css */
   input.search-input {
     border: none;
     outline: none;
     padding: 0.4em 1em;
     border-radius: 24px;
-    background: #7c7c7c2b;
+    background: #000000e0;
     color: white;
     font-family: inherit;
     font-size: 105%;
-    width: calc(100% - 100px);
+    width: 100%;
   }
 
   .search {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    margin-top:3.3em;
+    width: 40%;
   }
 
-
+/* Alert Box */
   .alert {
     padding: 1em;
     color: white;
@@ -72,4 +66,33 @@ button {
     right: 0;
     background-color: #ff4d4d;
   }
-  
+
+  .card {
+
+    display: flex;
+
+  }
+
+  /* common css for all the 3 div inside card. */
+  .weather,.weather_description,.weather_extra_description {
+
+    padding: 2.5em;
+    background: #000000d0;
+    color: white;
+    border-radius: 30px;
+    width: 100%;
+    max-width: 200px;
+    margin: 2.5em;
+    margin-top: 3.5em;
+
+
+  }
+
+  .weather_extra_description{
+    display: flex;
+    flex-direction: column;
+  }
+
+
+
+ 
