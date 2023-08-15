@@ -11,6 +11,7 @@ This is a simple weather app that fetches 7-day weather forecast data from the O
   - [Fetching Weather Data](#fetching-weather-data)
   - [Storing Weather Data](#storing-weather-data)
   - [Displaying Weather Data](#displaying-weather-data)
+- [Database Schema](#database-schema)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -28,7 +29,7 @@ This is a simple weather app that fetches 7-day weather forecast data from the O
 1. Clone this repository to your web server directory.
 2. Replace `'YOUR_API_KEY'` in `script.js` with your OpenWeather API key.
 3. Configure your MySQL database credentials in `2357932_sajanmainali_weatherhistory.php` and `2357932_sajanmainali_getweatherdata.php`.
-4. Create the MySQL schema by running the provided SQL scripts in the `sql_scripts` directory. The scripts are named `create_schema.sql`.
+4. Create the MySQL schema by running the provided SQL script `create_schema.sql` in the `sql_scripts` directory.
 
 ## Usage
 
@@ -48,6 +49,23 @@ This is a simple weather app that fetches 7-day weather forecast data from the O
 - The stored weather data can be displayed using `2357932_sajanmainali_getweatherdata.php`.
 - Modify the MySQL connection credentials in `2357932_sajanmainali_getweatherdata.php`.
 - This script retrieves the stored data from the database and displays it.
+
+## Database Schema
+
+Here's the table schema used to store weather data:
+
+```sql
+CREATE TABLE data_weather (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    temperature DECIMAL(5, 2),
+    description VARCHAR(255),
+    city VARCHAR(100),
+    date VARCHAR(255),
+    day_of_week VARCHAR(20),
+    icon VARCHAR(10),
+    UNIQUE KEY unique_date_city (date, city)
+);
+
 
 ## Contributing
 
