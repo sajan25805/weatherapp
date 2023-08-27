@@ -2,10 +2,12 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-$host = "localhost";
-$username = "root";
-$password = "";
-$dbname = "climates";
+$host = "sql310.infinityfree.com";
+$username = "if0_34903045";
+$password = "b8dnH6582MqW0Q";
+$dbname = "if0_34903045_climates";
+
+
 
 // Create connection
 $conn = new mysqli($host, $username, $password, $dbname);

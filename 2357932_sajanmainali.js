@@ -1,25 +1,98 @@
 const apiKey = "fef8d2dffbb9e6b7136baacf21527fe9";
 
+// Load initial city list from local storage and display the first city's weather data
+document.addEventListener("DOMContentLoaded", function () {
+    const cities = loadCitiesFromLocalStorage();
+    if (cities.length > 0) {
+        displayCitiesList(cities);
+        fetchWeatherApi(cities[0]);
+    }
 
-//  Fetchind data from openweathermap api endpoint.
+    // Attach event listeners for search and button click
+    document.getElementById("buttonClick").addEventListener("click", function () {
+        changeBackgroundImage();
+        const city = document.querySelector(".search-input").value;
+        searchCity(city);
+    });
+
+    document.querySelector(".search-input").addEventListener("keyup", function (event) {
+        if (event.key === "Enter") {
+            changeBackgroundImage();
+            const city = document.querySelector(".search-input").value;
+            searchCity(city);
+        }
+    });
+});
+
+// Function to load cities from local storage
+function loadCitiesFromLocalStorage() {
+    const citiesJSON = localStorage.getItem("cities");
+    if (citiesJSON) {
+        return JSON.parse(citiesJSON);
+    } else {
+        return [];
+    }
+}
+
+// Function to save cities to local storage
+function saveCitiesToLocalStorage(cities) {
+    localStorage.setItem("cities", JSON.stringify(cities));
+}
+
+// Function to display the list of cities
+function displayCitiesList(cities) {
+    const citiesList = document.getElementById("citiesList");
+    citiesList.innerHTML = cities.map(city => `<li>${city}</li>`).join("");
+
+    // Attach click event to each city
+    citiesList.querySelectorAll("li").forEach(cityItem => {
+        cityItem.addEventListener("click", function () {
+            fetchWeatherApi(cityItem.textContent);
+        });
+    });
+}
+
+// Function to search for a city and display its weather data
+function searchCity(city) {
+    const cities = loadCitiesFromLocalStorage();
+
+    if (!cities.includes(city)) {
+        cities.unshift(city);
+        saveCitiesToLocalStorage(cities);
+        displayCitiesList(cities);
+    }
+
+    fetchWeatherApi(city);
+}
+
+// Function to fetch weather data
 async function fetchWeatherApi(city) {
     try {
-        const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
-        const weatherResponse = await fetch(weatherUrl);
-        const weatherData = await weatherResponse.json();
+        const cachedData = localStorage.getItem(city);
 
-        if (weatherData.cod === "404") {
-            displayAlert("City not found", "#000000e0");
-        }
-        else {
+        if (cachedData) {
+            const weatherData = JSON.parse(cachedData);
             getWeather(weatherData);
+        } else {
+            const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
+            const weatherResponse = await fetch(weatherUrl);
+            const weatherData = await weatherResponse.json();
 
+            if (weatherData.cod === "404") {
+                displayAlert("City not found", "#000000e0");
+            } else {
+                storeDataInLocalStorage(city, weatherData);
+                getWeather(weatherData);
+            }
         }
-
     } catch (error) {
         displayAlert(`${error}`, " #000000e0");
     }
+}
 
+// Function to store weather data in local storage
+function storeDataInLocalStorage(city, data) {
+    localStorage.setItem(city, JSON.stringify(data));
 }
 
 // Function to get the current Date. Using Unix timestamp format I have fetched the date.
@@ -54,7 +127,6 @@ function getWeather(weatherData) {
     let currentDate = getCurrentDate(dt);
     let upatedTemperature = Math.floor(temperature);
 
-    console.log(weatherData);
 
     displayWeather(
         name,
@@ -116,7 +188,6 @@ function displayWeather(
         .then(response => response.json())
         .then(data => {
             const weatherHistoryDiv = document.getElementById('weatherHistory');
-
             const weatherCardsHTML = data.map(entry => `
        <div class="weather-card">
          <div>${entry.date}</div>
@@ -178,8 +249,6 @@ function displayAlert(message, color) {
 
 // Waits for the HTML document to be fully loaded before executing the enclosed code.
 document.addEventListener("DOMContentLoaded", function () {
-
-
     // When the icon is clicked, it calls search() function and changeBackgroundImage() function.
     document.getElementById("buttonClick").addEventListener("click", function () {
         changeBackgroundImage();
@@ -200,3 +269,12 @@ document.addEventListener("DOMContentLoaded", function () {
     fetchWeatherApi("guntersville");
     changeBackgroundImage();
 });
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const cities = loadCitiesFromLocalStorage();
+    if (cities.length > 0) {
+        fetchWeatherApi(cities[0]);
+    }
+});
+
